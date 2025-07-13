@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Malla Curricular</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; margin: 20px; }
+    h1 { text-align: center; }
+    .semestre { margin: 20px 0; background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .materia { padding: 5px; cursor: pointer; }
+    .materia.aprobada { background: #c8f7c5; }
+  </style>
+</head>
+<body>
+  <h1>Mi Malla Curricular</h1>
+
+  <div class="semestre">
+    <h2>Semestre 1</h2>
+    <div class="materia" onclick="toggleAprobada(this)">Matemáticas I</div>
+    <div class="materia" onclick="toggleAprobada(this)">Introducción a la Programación</div>
+    <div class="materia" onclick="toggleAprobada(this)">Comunicación Oral y Escrita</div>
+  </div>
+
+  <div class="semestre">
+    <h2>Semestre 2</h2>
+    <div class="materia" onclick="toggleAprobada(this)">Álgebra Lineal</div>
+    <div class="materia" onclick="toggleAprobada(this)">Estructuras de Datos</div>
+    <div class="materia" onclick="toggleAprobada(this)">Inglés Técnico</div>
+  </div>
+
+  <script>
+    function toggleAprobada(elemento) {
+      elemento.classList.toggle('aprobada');
+    }
+  </script>
+</body>
+</html>
