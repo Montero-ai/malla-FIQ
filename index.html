@@ -110,6 +110,7 @@
         semestre: 2,
         nombre: "Cálculo Integral",
         id: "calc_int",
+        requisitos: ["calc_diff"],
         abre: ["calc_multi","ecuaciones"]
       },
       {
@@ -128,12 +129,14 @@
         semestre: 2,
         nombre: "Química Orgánica I",
         id: "org1",
+        requisitos: ["quim_gen"],
         abre: ["org2"]
       },
       {
         semestre: 2,
         nombre: "Inglés II",
         id: "ing2",
+        requisitos: ["ing1"],
         abre: ["ing3"]
       }
       // Puedes seguir agregando materias aquí...
@@ -161,18 +164,19 @@
           div.id = materia.id;
 
           const aprobado = estado[materia.id] === 'aprobada';
-          const habilitado = materia.abre === undefined || materia.abre.length === 0 || Object.values(estado).includes('aprobada') || materia.abre.every(dep => estado[dep] === 'aprobada');
+          const requisitos = materia.requisitos || [];
+          const habilitada = requisitos.every(req => estado[req] === 'aprobada');
 
           if (aprobado) {
             div.classList.add('aprobada');
-          } else if (materia.requisitos && materia.requisitos.some(req => estado[req] !== 'aprobada')) {
-            div.classList.add('bloqueada');
-          } else {
+          } else if (habilitada || requisitos.length === 0) {
             div.classList.add('habilitada');
+          } else {
+            div.classList.add('bloqueada');
           }
 
           div.addEventListener('click', () => {
-            if (div.classList.contains('bloqueada')) return;
+            if (!div.classList.contains('habilitada') && !div.classList.contains('aprobada')) return;
 
             if (div.classList.contains('aprobada')) {
               div.classList.remove('aprobada');
