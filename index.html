@@ -1,209 +1,220 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Malla Interactiva de Ingeniería Química</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Malla Interactiva</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #fff0f0;
+      background: #f0f0f0;
       margin: 0;
       padding: 20px;
     }
-    h1 {
-      text-align: center;
-      color: #b1005b;
-    }
-    .grid {
+    .malla {
       display: flex;
       gap: 20px;
       justify-content: center;
-      flex-wrap: nowrap;
-      align-items: flex-start;
     }
     .año {
-      background: #ffe5ec;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       padding: 10px;
-      border-radius: 10px;
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+      flex: 1;
       min-width: 200px;
     }
     .año h2 {
       text-align: center;
-      color: #e60073;
+      border-bottom: 2px solid #ddd;
     }
     .semestre {
       margin-bottom: 20px;
-      background: #ffeef4;
-      padding: 10px;
-      border-radius: 8px;
     }
     .semestre h3 {
-      margin-top: 0;
       font-size: 16px;
-      color: #cc0066;
+      background: #ddd;
+      padding: 5px;
+      border-radius: 4px;
       text-align: center;
     }
     .materia {
-      background: #ffffff;
-      border-left: 5px solid #ff99cc;
-      margin: 5px 0;
+      background: pink;
+      border: 1px solid #ccc;
+      border-radius: 4px;
       padding: 8px;
-      border-radius: 5px;
+      margin: 5px 0;
       cursor: pointer;
-      opacity: 0.6;
-      transition: all 0.3s;
+      opacity: 1;
+      transition: background 0.3s, opacity 0.3s;
+    }
+    .materia.bloqueada {
+      background: #ddd;
+      cursor: not-allowed;
+      opacity: 0.4;
     }
     .materia.activa {
-      opacity: 1;
-      background-color: #ffe6f0;
+      background: skyblue !important;
+      color: black;
     }
   </style>
 </head>
 <body>
-  <h1>Malla Interactiva - Ingeniería Química</h1>
-  <div class="grid" id="malla"></div>
+  <h1 style="text-align:center">Malla Interactiva</h1>
+  <div class="malla" id="malla"></div>
   <script>
     const materias = {
       "1": {
-        "1.º Semestre": [
+        "1er Semestre": [
           { nombre: "Taller de Introducción a Ingenierías", abre: ["Balance de Materia y Energía"] },
           { nombre: "Álgebra Lineal" },
           { nombre: "Cálculo Diferencial", abre: ["Cálculo Integral"] },
           { nombre: "Química General", abre: ["Química Orgánica I", "Química Analítica"] },
           { nombre: "Inglés I", abre: ["Inglés II"] },
-          { nombre: "Introducción a la Formación General Universitaria", abre: ["Formación General Disciplinaria"] },
+          { nombre: "Intro. Formación General Universitaria", abre: ["Formación General Disciplinaria"] },
           { nombre: "Desarrollo Sostenible para Ingeniería" }
         ],
         "2.º Semestre": [
           { nombre: "Sistemas de Gestión de la Calidad" },
-          { nombre: "Cálculo Integral", prereq: ["Cálculo Diferencial"], abre: ["Cálculo Multivariable", "Ecuaciones Diferenciales"] },
+          { nombre: "Cálculo Integral", abre: ["Cálculo Multivariable", "Ecuaciones Diferenciales"], requiere: ["Cálculo Diferencial"] },
           { nombre: "Física I", abre: ["Física II"] },
           { nombre: "Fisicoquímica I", abre: ["Fisicoquímica II"] },
-          { nombre: "Química Orgánica I", prereq: ["Química General"], abre: ["Química Orgánica II"] },
-          { nombre: "Inglés II", prereq: ["Inglés I"], abre: ["Inglés III"] }
+          { nombre: "Química Orgánica I", abre: ["Química Orgánica II"], requiere: ["Química General"] },
+          { nombre: "Inglés II", requiere: ["Inglés I"], abre: ["Inglés III"] }
         ]
       },
       "2": {
         "3.er Semestre": [
-          { nombre: "Cálculo Multivariable", prereq: ["Cálculo Integral"] },
-          { nombre: "Física II", prereq: ["Física I"] },
-          { nombre: "Fisicoquímica II", prereq: ["Fisicoquímica I"], abre: ["Fisicoquímica III", "Fenómenos de Transporte I"] },
+          { nombre: "Cálculo Multivariable", requiere: ["Cálculo Integral"] },
+          { nombre: "Física II", requiere: ["Física I"] },
+          { nombre: "Fisicoquímica II", requiere: ["Fisicoquímica I"], abre: ["Fisicoquímica III", "Fenómenos de Transporte I"] },
           { nombre: "Probabilidad y Estadística", abre: ["Diseño de Experimentos y Análisis de Datos"] },
-          { nombre: "Química Orgánica II", prereq: ["Química Orgánica I"] },
-          { nombre: "Inglés III", prereq: ["Inglés II"], abre: ["Inglés IV"] }
+          { nombre: "Química Orgánica II", requiere: ["Química Orgánica I"] },
+          { nombre: "Inglés III", requiere: ["Inglés II"], abre: ["Inglés IV"] }
         ],
         "4.º Semestre": [
-          { nombre: "Diseño de Experimentos y Análisis de Datos", prereq: ["Probabilidad y Estadística"] },
-          { nombre: "Ecuaciones Diferenciales", prereq: ["Cálculo Integral"], abre: ["Análisis Numérico y Programación", "Gestión de Proyectos Innovadores"] },
-          { nombre: "Fisicoquímica III", prereq: ["Fisicoquímica II"], abre: ["Fisicoquímica IV"] },
-          { nombre: "Química Analítica", prereq: ["Química General"], abre: ["Análisis Instrumental"] },
-          { nombre: "Formación General Disciplinaria", prereq: ["Introducción a la Formación General Universitaria"], abre: ["Formación General Profesional"] },
-          { nombre: "Inglés IV", prereq: ["Inglés III"] },
-          { nombre: "Balance de Materia y Energía", prereq: ["Taller de Introducción a Ingenierías"], abre: ["Laboratorio de Ingeniería I"] }
+          { nombre: "Diseño de Experimentos y Análisis de Datos", requiere: ["Probabilidad y Estadística"] },
+          { nombre: "Ecuaciones Diferenciales", requiere: ["Cálculo Integral"], abre: ["Análisis Numérico y Programación", "Gestión de Proyectos Innovadores"] },
+          { nombre: "Fisicoquímica III", requiere: ["Fisicoquímica II"], abre: ["Fisicoquímica IV"] },
+          { nombre: "Química Analítica", requiere: ["Química General"], abre: ["Análisis Instrumental"] },
+          { nombre: "Formación General Disciplinaria", requiere: ["Intro. Formación General Universitaria"], abre: ["Formación General Profesional"] },
+          { nombre: "Inglés IV", requiere: ["Inglés III"] },
+          { nombre: "Balance de Materia y Energía", requiere: ["Taller de Introducción a Ingenierías"], abre: ["Laboratorio de Ingeniería I"] }
         ]
       },
       "3": {
         "5.º Semestre": [
-          { nombre: "Fenómenos de Transporte I", prereq: ["Fisicoquímica II"], abre: ["Fenómenos de Transporte II", "Diseño de Intercambiadores de Calor", "Flujo de Fluidos"] },
+          { nombre: "Fenómenos de Transporte I", requiere: ["Fisicoquímica II"], abre: ["Fenómenos de Transporte II", "Diseño de Intercambiadores de Calor", "Flujo de Fluidos"] },
           { nombre: "Ingeniería Económica" },
-          { nombre: "Análisis Instrumental", prereq: ["Química Analítica"] },
-          { nombre: "Análisis Numérico y Programación", prereq: ["Ecuaciones Diferenciales"] },
-          { nombre: "Fisicoquímica IV", prereq: ["Fisicoquímica III"], abre: ["Cinética y Reactores Homogéneos"] },
+          { nombre: "Análisis Instrumental", requiere: ["Química Analítica"] },
+          { nombre: "Análisis Numérico y Programación", requiere: ["Ecuaciones Diferenciales"] },
+          { nombre: "Fisicoquímica IV", requiere: ["Fisicoquímica III"], abre: ["Cinética y Reactores Homogéneos"] },
           { nombre: "Ingeniería de Separaciones Mecánicas" }
         ],
         "6.º Semestre": [
-          { nombre: "Fenómenos de Transporte II", prereq: ["Fenómenos de Transporte I"], abre: ["Procesos de Separación I"] },
-          { nombre: "Gestión de Proyectos Innovadores", prereq: ["Ecuaciones Diferenciales"] },
+          { nombre: "Fenómenos de Transporte II", requiere: ["Fenómenos de Transporte I"], abre: ["Procesos de Separación I"] },
+          { nombre: "Gestión de Proyectos Innovadores", requiere: ["Ecuaciones Diferenciales"] },
           { nombre: "Optativa I Complementaria", abre: ["Optativa II Complementaria"] },
           { nombre: "Optativa I Disciplinarias", abre: ["Optativa II Disciplinarias"] },
-          { nombre: "Cinética y Reactores Homogéneos", prereq: ["Fisicoquímica IV"], abre: ["Catálisis y Reactores Heterogéneos", "Diseño de Procesos y Productos Químicos"] },
-          { nombre: "Diseño de Intercambiadores de Calor", prereq: ["Fenómenos de Transporte I"], abre: ["Ingeniería de Servicios Auxiliares"] },
-          { nombre: "Flujo de Fluidos", prereq: ["Fenómenos de Transporte I"] },
-          { nombre: "Laboratorio de Ingeniería I", prereq: ["Balance de Materia y Energía"], abre: ["Laboratorio de Ingeniería II"] }
+          { nombre: "Cinética y Reactores Homogéneos", requiere: ["Fisicoquímica IV"], abre: ["Catálisis y Reactores Heterogéneos", "Diseño de Procesos y Productos Químicos"] },
+          { nombre: "Diseño de Intercambiadores de Calor", requiere: ["Fenómenos de Transporte I"], abre: ["Ingeniería de Servicios Auxiliares"] },
+          { nombre: "Flujo de Fluidos", requiere: ["Fenómenos de Transporte I"] },
+          { nombre: "Laboratorio de Ingeniería I", requiere: ["Balance de Materia y Energía"], abre: ["Laboratorio de Ingeniería II"] }
         ]
       },
       "4": {
         "7.º Semestre": [
           { nombre: "Administración de los Procesos Químicos" },
-          { nombre: "Vinculación e Integración Social", abre: ["Práctica Profesional"] },
-          { nombre: "Optativa II Complementaria", prereq: ["Optativa I Complementaria"], abre: ["Optativa III Complementaria"] },
-          { nombre: "Optativa II Disciplinarias", prereq: ["Optativa I Disciplinarias"], abre: ["Optativa III Disciplinarias"] },
-          { nombre: "Catálisis y Reactores Heterogéneos", prereq: ["Cinética y Reactores Homogéneos"] },
-          { nombre: "Diseño de Procesos y Productos Químicos", prereq: ["Cinética y Reactores Homogéneos"], abre: ["Dinámica y Control de Procesos", "Ingeniería de Proyectos", "Tecnologías de Control de la Contaminación"] },
-          { nombre: "Laboratorio de Ingeniería II", prereq: ["Laboratorio de Ingeniería I"], abre: ["Laboratorio de Ingeniería III"] },
-          { nombre: "Procesos de Separación I", prereq: ["Fenómenos de Transporte II"], abre: ["Procesos de Separación II"] }
+          { nombre: "Vinculación e Integración Social", abre: ["Práctica Profesional (horas por periodo)"] },
+          { nombre: "Optativa II Complementaria", requiere: ["Optativa I Complementaria"], abre: ["Optativa III Complementaria"] },
+          { nombre: "Optativa II Disciplinarias", requiere: ["Optativa I Disciplinarias"], abre: ["Optativa III Disciplinarias"] },
+          { nombre: "Catálisis y Reactores Heterogéneos", requiere: ["Cinética y Reactores Homogéneos"] },
+          { nombre: "Diseño de Procesos y Productos Químicos", requiere: ["Cinética y Reactores Homogéneos"], abre: ["Dinámica y Control de Procesos", "Ingeniería de Proyectos", "Tecnologías de Control de la Contaminación"] },
+          { nombre: "Laboratorio de Ingeniería II", requiere: ["Laboratorio de Ingeniería I"], abre: ["Laboratorio de Ingeniería III"] },
+          { nombre: "Procesos de Separación I", requiere: ["Fenómenos de Transporte II"], abre: ["Procesos de Separación II"] }
         ],
         "8.º Semestre": [
-          { nombre: "Formación General Profesional", prereq: ["Formación General Disciplinaria"] },
-          { nombre: "Optativa III Complementaria", prereq: ["Optativa II Complementaria"], abre: ["Optativa IV Complementaria"] },
-          { nombre: "Optativa III Disciplinarias", prereq: ["Optativa II Disciplinarias"] },
-          { nombre: "Dinámica y Control de Procesos", prereq: ["Diseño de Procesos y Productos Químicos"] },
-          { nombre: "Ingeniería de Servicios Auxiliares", prereq: ["Diseño de Intercambiadores de Calor"], abre: ["Eficiencia Energética"] },
-          { nombre: "Laboratorio de Ingeniería III", prereq: ["Laboratorio de Ingeniería II"] },
-          { nombre: "Procesos de Separación II", prereq: ["Procesos de Separación I"] }
+          { nombre: "Formación General Profesional", requiere: ["Formación General Disciplinaria"] },
+          { nombre: "Optativa III Complementaria", requiere: ["Optativa II Complementaria"], abre: ["Optativa IV Complementaria"] },
+          { nombre: "Optativa III Disciplinarias", requiere: ["Optativa II Disciplinarias"] },
+          { nombre: "Dinámica y Control de Procesos", requiere: ["Diseño de Procesos y Productos Químicos"] },
+          { nombre: "Ingeniería de Servicios Auxiliares", requiere: ["Diseño de Intercambiadores de Calor"], abre: ["Eficiencia Energética"] },
+          { nombre: "Laboratorio de Ingeniería III", requiere: ["Laboratorio de Ingeniería II"] },
+          { nombre: "Procesos de Separación II", requiere: ["Procesos de Separación I"] }
         ]
-      },
+         },
       "5": {
         "9.º Semestre": [
-          { nombre: "Práctica Profesional", prereq: ["Vinculación e Integración Social"] },
-          { nombre: "Optativa IV Complementaria", prereq: ["Optativa III Complementaria"] },
-          { nombre: "Eficiencia Energética", prereq: ["Ingeniería de Servicios Auxiliares"] },
-          { nombre: "Ingeniería de Proyectos", prereq: ["Diseño de Procesos y Productos Químicos"] },
+          { nombre: "Práctica Profesional (horas por periodo)", requiere: ["Vinculación e Integración Social"] },
+          { nombre: "Optativa IV Complementaria", requiere: ["Optativa III Complementaria"] },
+          { nombre: "Eficiencia Energética", requiere: ["Ingeniería de Servicios Auxiliares"] },
+          { nombre: "Ingeniería de Proyectos", requiere: ["Diseño de Procesos y Productos Químicos"] },
           { nombre: "Seguridad e Higiene Industrial" },
-          { nombre: "Tecnologías de Control de la Contaminación", prereq: ["Diseño de Procesos y Productos Químicos"] }
+          { nombre: "Tecnologías de Control de la Contaminación", requiere: ["Diseño de Procesos y Productos Químicos"] }
         ]
       }
     };
 
-    const contenedor = document.getElementById("malla");
+    const completadas = new Set();
+    const materiasPorNombre = {};
 
-    function crearMateria(materia) {
-      const div = document.createElement("div");
-      div.textContent = materia.nombre;
-      div.className = "materia";
-      div.dataset.nombre = materia.nombre;
-      div.dataset.abre = (materia.abre || []).join("|");
-      div.dataset.prereq = (materia.prereq || []).join("|");
-      div.addEventListener("click", () => {
-        const requisitos = div.dataset.prereq ? div.dataset.prereq.split("|") : [];
-        const cumplidos = requisitos.every(r => document.querySelector(`.materia[data-nombre='${r}']`)?.classList.contains("activa"));
-        if (requisitos.length === 0 || cumplidos) {
-          div.classList.toggle("activa");
-          activarDependientes(div.dataset.nombre);
-        } else {
-          alert("Debes activar primero los prerrequisitos: " + requisitos.join(", "));
+    function crearMalla() {
+      const contenedor = document.getElementById("malla");
+      for (const año in materias) {
+        const columna = document.createElement("div");
+        columna.className = "año";
+
+        const tituloAño = document.createElement("h2");
+        tituloAño.textContent = `Año ${año}`;
+        columna.appendChild(tituloAño);
+
+        for (const semestre in materias[año]) {
+          const bloque = document.createElement("div");
+          bloque.className = "semestre";
+
+          const titulo = document.createElement("h3");
+          titulo.textContent = semestre;
+          bloque.appendChild(titulo);
+
+          materias[año][semestre].forEach((materia) => {
+            const div = document.createElement("div");
+            div.className = "materia bloqueada";
+            div.textContent = materia.nombre;
+            div.onclick = () => activarMateria(materia.nombre);
+            bloque.appendChild(div);
+            materiasPorNombre[materia.nombre] = { ...materia, div };
+          });
+
+          columna.appendChild(bloque);
         }
-      });
-      return div;
-    }
 
-    function activarDependientes(nombre) {
-      document.querySelectorAll(`.materia[data-prereq*='${nombre}']`).forEach(m => {
-        // Opcional: auto desbloquear algo si quieres
-      });
-    }
-
-    for (const año in materias) {
-      const divAño = document.createElement("div");
-      divAño.className = "año";
-      const titulo = document.createElement("h2");
-      titulo.textContent = `Año ${año}`;
-      divAño.appendChild(titulo);
-
-      for (const semestre in materias[año]) {
-        const divSemestre = document.createElement("div");
-        divSemestre.className = "semestre";
-        const h3 = document.createElement("h3");
-        h3.textContent = semestre;
-        divSemestre.appendChild(h3);
-
-        materias[año][semestre].forEach(m => divSemestre.appendChild(crearMateria(m)));
-        divAño.appendChild(divSemestre);
+        contenedor.appendChild(columna);
       }
 
-      contenedor.appendChild(divAño);
+      actualizarEstadoMaterias();
     }
+
+    function activarMateria(nombre) {
+      const m = materiasPorNombre[nombre];
+      if (m.requiere && !m.requiere.every(r => completadas.has(r))) return;
+
+      if (!completadas.has(nombre)) {
+        completadas.add(nombre);
+        m.div.classList.add("activa");
+        actualizarEstadoMaterias();
+      }
+    }
+
+    function actualizarEstadoMaterias() {
+      for (const nombre in materiasPorNombre) {
+        const m = materiasPorNombre[nombre];
+        const activa = completadas.has(nombre);
+        const habilitada = !m.requiere || m.requiere.every(r => completadas.has(r));
+        m.div.className = "materia" + (activa ? " activa" : habilitada ? "" : " bloqueada");
+      }
+    }
+
+    crearMalla();
   </script>
 </body>
 </html>
