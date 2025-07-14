@@ -52,7 +52,7 @@
       border-radius: 5px;
       cursor: pointer;
       opacity: 0.6;
-      transition: backgroud 0.3s, opacity 0,3s;
+      transition: background 0.3s, opacity 0,3s;
     }
     .materia.bloqueada {
       opacity: 0.3;
@@ -179,6 +179,10 @@
         if (requisitos.length === 0 || cumplidos) {
           div.classList.toggle("activa");
           activarDependientes(div.dataset.nombre);
+          if (requisitos.length === 0 || cumplidos) {
+            actualizarBloqueos();
+          }
+
         } 
       });
       return div;
@@ -188,6 +192,20 @@
       document.querySelectorAll(`.materia[data-prereq*='${nombre}']`).forEach(m => {
         // Opcional: auto desbloquear algo si quieres
       });
+    }
+
+    function actualizarBloqueos() {
+  document.querySelectorAll(".materia").forEach(m => {
+    const requisitos = m.dataset.prereq ? m.dataset.prereq.split("|") : [];
+    const cumplidos = requisitos.every(r =>
+      document.querySelector(`.materia[data-nombre='${r}']`)?.classList.contains("activa")
+    );
+    if (requisitos.length > 0 && !cumplidos && !m.classList.contains("activa")) {
+      m.classList.add("bloqueada");
+    } else {
+      m.classList.remove("bloqueada");
+    }
+  });
     }
 
     for (const año in materias) {
