@@ -2,233 +2,112 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Malla Curricular Interactiva</title>
+  <title>Malla Interactiva</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f2f2f2;
+      background: #ffeef0;
       margin: 0;
       padding: 20px;
     }
+
     h1 {
       text-align: center;
+      color: #d6336c;
     }
-    .grid {
+
+    .container {
       display: flex;
-      gap: 40px;
-      overflow-x: auto;
-      padding: 20px 0;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
     }
-    .anio {
-      min-width: 250px;
-      background: #fff;
+
+    .semestre {
+      background: #ffd4dd;
+      border: 2px solid #ffb6c1;
       border-radius: 10px;
       padding: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 250px;
     }
-    .anio h2 {
+
+    .semestre h2 {
       text-align: center;
-      margin-bottom: 10px;
-      background: #0074d9;
-      color: white;
-      border-radius: 6px;
-      padding: 6px;
+      background: #fff0f3;
+      border-radius: 5px;
+      padding: 5px;
+      color: #c2185b;
     }
-    .semestre {
-      background: #fafafa;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      margin-bottom: 10px;
-      padding: 10px;
-    }
-    .semestre h3 {
-      text-align: center;
-      border-bottom: 1px solid #ccc;
-      margin-bottom: 8px;
-    }
+
     .materia {
-      background: #eee;
-      margin: 6px 0;
-      padding: 8px;
-      border-radius: 6px;
-      text-align: center;
-      cursor: pointer;
-      transition: background 0.3s;
+      background: #fce4ec;
+      border-left: 5px solid #f06292;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 5px;
+      font-weight: bold;
+      box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
     }
-    .materia.habilitada {
-      background: #cce5ff;
-    }
-    .materia.aprobada {
-      background: #b7f7b3;
-      text-decoration: line-through;
-    }
-    .materia.bloqueada {
-      background: #ddd;
-      cursor: not-allowed;
-      opacity: 0.6;
+
+    .materia.avanzada {
+      background: #e1bee7;
+      border-left-color: #8e24aa;
     }
   </style>
 </head>
 <body>
-  <h1>Malla Curricular Interactiva</h1>
-  <div class="grid" id="contenedor-malla"></div>
 
-  <script>
-    const materias = [
-      {
-        semestre: 1,
-        nombre: "Taller de Introducción a Ingenierías",
-        id: "intro",
-        abre: ["balance"]
-      },
-      {
-        semestre: 1,
-        nombre: "Álgebra Lineal",
-        id: "algebra"
-      },
-      {
-        semestre: 1,
-        nombre: "Cálculo Diferencial",
-        id: "calc_diff",
-        abre: ["calc_int"]
-      },
-      {
-        semestre: 1,
-        nombre: "Química General",
-        id: "quim_gen",
-        abre: ["org1","analitica"]
-      },
-      {
-        semestre: 1,
-        nombre: "Inglés I",
-        id: "ing1",
-        abre: ["ing2"]
-      },
-      {
-        semestre: 1,
-        nombre: "Formación General Universitaria",
-        id: "form_gen_univ",
-        abre: ["form_gen_disc"]
-      },
-      {
-        semestre: 1,
-        nombre: "Desarrollo Sostenible",
-        id: "des_sost"
-      },
-      {
-        semestre: 2,
-        nombre: "Sistemas de Gestión de la Calidad",
-        id: "sist_gest"
-      },
-      {
-        semestre: 2,
-        nombre: "Cálculo Integral",
-        id: "calc_int",
-        requisitos: ["calc_diff"],
-        abre: ["calc_multi","ecuaciones"]
-      },
-      {
-        semestre: 2,
-        nombre: "Física I",
-        id: "fis1",
-        abre: ["fis2"]
-      },
-      {
-        semestre: 2,
-        nombre: "Fisicoquímica I",
-        id: "fisiq1",
-        abre: ["fisiq2"]
-      },
-      {
-        semestre: 2,
-        nombre: "Química Orgánica I",
-        id: "org1",
-        requisitos: ["quim_gen"],
-        abre: ["org2"]
-      },
-      {
-        semestre: 2,
-        nombre: "Inglés II",
-        id: "ing2",
-        requisitos: ["ing1"],
-        abre: ["ing3"]
-      }
-    ];
+  <h1>Malla Curricular - Ingeniería Química</h1>
+  <div class="container">
 
-    const estado = JSON.parse(localStorage.getItem('estadoMalla')) || {};
+    <!-- 1° Semestre -->
+    <div class="semestre">
+      <h2>1° Semestre</h2>
+      <div class="materia">Taller de Introducción a Ingenierías</div>
+      <div class="materia">Álgebra Lineal</div>
+      <div class="materia">Cálculo Diferencial</div>
+      <div class="materia">Química General</div>
+      <div class="materia">Inglés I</div>
+      <div class="materia">Formación General Univ.</div>
+      <div class="materia">Desarrollo Sostenible</div>
+    </div>
 
-    function guardarEstado() {
-      localStorage.setItem('estadoMalla', JSON.stringify(estado));
-    }
+    <!-- 2° Semestre -->
+    <div class="semestre">
+      <h2>2° Semestre</h2>
+      <div class="materia">Sistemas de Gestión</div>
+      <div class="materia">Cálculo Integral</div>
+      <div class="materia">Física I</div>
+      <div class="materia">Fisicoquímica I</div>
+      <div class="materia">Química Orgánica I</div>
+      <div class="materia">Inglés II</div>
+    </div>
 
-    function crearMalla() {
-      const contenedor = document.getElementById('contenedor-malla');
-      const anios = {
-        "Primer año": [1, 2],
-        "Segundo año": [3, 4],
-        "Tercer año": [5, 6],
-        "Cuarto año": [7, 8],
-        "Quinto año": [9]
-      };
+    <!-- 3° Semestre -->
+    <div class="semestre">
+      <h2>3° Semestre</h2>
+      <div class="materia">Cálculo Multivariable</div>
+      <div class="materia">Física II</div>
+      <div class="materia">Fisicoquímica II</div>
+      <div class="materia">Estadística</div>
+      <div class="materia">Química Orgánica II</div>
+      <div class="materia">Inglés III</div>
+    </div>
 
-      for (const [nombreAnio, semestres] of Object.entries(anios)) {
-        const columna = document.createElement('div');
-        columna.className = 'anio';
+    <!-- 4° Semestre -->
+    <div class="semestre">
+      <h2>4° Semestre</h2>
+      <div class="materia">Diseño de Experimentos</div>
+      <div class="materia">Ecuaciones Diferenciales</div>
+      <div class="materia">Fisicoquímica III</div>
+      <div class="materia">Química Analítica</div>
+      <div class="materia">Formación Disciplinaria</div>
+      <div class="materia">Inglés IV</div>
+      <div class="materia">Balance de Materia y Energía</div>
+    </div>
 
-        const titulo = document.createElement('h2');
-        titulo.textContent = nombreAnio;
-        columna.appendChild(titulo);
+    <!-- Puedes seguir con 5°, 6°, etc. -->
+  </div>
 
-        semestres.forEach(num => {
-          const bloque = document.createElement('div');
-          bloque.className = 'semestre';
-          bloque.innerHTML = `<h3>Semestre ${num}</h3>`;
-
-          materias.filter(m => m.semestre === num).forEach(materia => {
-            const div = document.createElement('div');
-            div.className = 'materia';
-            div.textContent = materia.nombre;
-            div.id = materia.id;
-
-            const aprobado = estado[materia.id] === 'aprobada';
-            const requisitos = materia.requisitos || [];
-            const habilitada = requisitos.every(req => estado[req] === 'aprobada');
-
-            if (aprobado) {
-              div.classList.add('aprobada');
-            } else if (habilitada || requisitos.length === 0) {
-              div.classList.add('habilitada');
-            } else {
-              div.classList.add('bloqueada');
-            }
-
-            div.addEventListener('click', () => {
-              if (!div.classList.contains('habilitada') && !div.classList.contains('aprobada')) return;
-
-              if (div.classList.contains('aprobada')) {
-                div.classList.remove('aprobada');
-                estado[materia.id] = undefined;
-              } else {
-                div.classList.add('aprobada');
-                estado[materia.id] = 'aprobada';
-              }
-
-              guardarEstado();
-              location.reload();
-            });
-
-            bloque.appendChild(div);
-          });
-
-          columna.appendChild(bloque);
-        });
-
-        contenedor.appendChild(columna);
-      }
-    }
-
-    crearMalla();
-  </script>
 </body>
 </html>
