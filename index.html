@@ -55,8 +55,9 @@
       transition: all 0.3s;
     }
     .materia.bloqueada {
-      opacity: 0.4;
+      opacity: 1;
       background-color: #ededed;
+      border-left: 5px solid #bebebe;
       cursor: not-allowed;
     }
     .materia.activa {
@@ -64,7 +65,7 @@
       background-color: #d4ead3;
       text-decoration-line: line-through;
       text-decoration-color: #c8e2c7;
-      text-decoration-thickness: 2px;
+      text-decoration-thickness: 1px;
     }
   </style>
 </head>
@@ -179,9 +180,7 @@
         if (requisitos.length === 0 || cumplidos) {
           div.classList.toggle("activa");
           activarDependientes(div.dataset.nombre);
-        } else {
-          alert("Debes activar primero los prerrequisitos: " + requisitos.join(", "));
-        }
+        } 
       });
       return div;
     }
