@@ -55,8 +55,8 @@
       transition: background 0.3s, opacity 0,3s;
     }
     .materia.bloqueada {
-      opacity: 0.3;
-      background: #ededed;
+      opacity: 0.5;
+      background: #ffcccc;
       cursor: not-allowed;
     }
     .materia.activa {
@@ -173,17 +173,18 @@
       div.dataset.nombre = materia.nombre;
       div.dataset.abre = (materia.abre || []).join("|");
       div.dataset.prereq = (materia.prereq || []).join("|");
+      
       div.addEventListener("click", () => {
         const requisitos = div.dataset.prereq ? div.dataset.prereq.split("|") : [];
-        const cumplidos = requisitos.every(r => document.querySelector(`.materia[data-nombre='${r}']`)?.classList.contains("activa"));
+        const cumplidos = requisitos.every(r => 
+          document.querySelector(`.materia[data-nombre='${r}']`)?.classList.contains("activa")
+        );
+        
         if (requisitos.length === 0 || cumplidos) {
           div.classList.toggle("activa");
           activarDependientes(div.dataset.nombre);
-          if (requisitos.length === 0 || cumplidos) {
-            actualizarBloqueos();
+          actualizarBloqueos();
           }
-
-        } 
       });
       return div;
     }
