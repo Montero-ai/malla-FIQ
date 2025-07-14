@@ -66,11 +66,31 @@
       text-decoration-color: #c8e2c7;
       text-decoration-thickness: 1px;
     }
+    .controls {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+        button {
+      background-color: #e60073;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background-color: #c40063;
+    }
   </style>
 </head>
 <body>
   <h1>Malla Interactiva - Ingeniería Química</h1>
+  <div class="controls">
+  <button onclick="reiniciarProgreso()">Reiniciar progreso</button>
+  </div>
   <div class="grid" id="malla"></div>
+  
   <script>
     const materias = {
       "1": {
@@ -173,6 +193,11 @@
       div.dataset.nombre = materia.nombre;
       div.dataset.abre = (materia.abre || []).join("|");
       div.dataset.prereq = (materia.prereq || []).join("|");
+
+      const estadoGuardado = JSON.parse(localStorage.getItem("materiasActivas") || "[]");
+      if (estadoGuardado.includes(materia.nombre)) {
+        div.classList.add("activa");
+      }
       
       div.addEventListener("click", () => {
         const requisitos = div.dataset.prereq ? div.dataset.prereq.split("|") : [];
@@ -182,7 +207,7 @@
         
         if (requisitos.length === 0 || cumplidos) {
           div.classList.toggle("activa");
-          activarDependientes(div.dataset.nombre);
+           guardarProgreso(); 
           actualizarBloqueos();
           }
       });
@@ -208,6 +233,17 @@
     }
   });
     }
+    function guardarProgreso() {
+      const activas = Array.from(document.querySelectorAll(".materia.activa")).map(m => m.dataset.nombre);
+      localStorage.setItem("materiasActivas", JSON.stringify(activas));
+    }
+    
+    function reiniciarProgreso() {
+      if (confirm("¿Estás seguro de que quieres reiniciar tu progreso?")) {
+        localStorage.removeItem("materiasActivas");
+        location.reload();
+      }
+    }
 
     for (const año in materias) {
       const divAño = document.createElement("div");
@@ -229,6 +265,8 @@
 
       contenedor.appendChild(divAño);
     }
+
+    actualizarBloqueos(); // Al iniciar
   </script>
 </body>
 </html>
