@@ -52,8 +52,13 @@
       border-radius: 5px;
       cursor: pointer;
       opacity: 0.6;
-      transition: background 0.3s, opacity 0,3s;
+      transition: transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s, opacity 0.3s;
     }
+    .materia:not(.bloqueada):hover {
+  transform: translateY(2px);
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
     .materia.bloqueada {
       opacity: 0.5;
       background: #ffcccc;
@@ -65,13 +70,8 @@
       text-decoration-line: line-through;
       text-decoration-color: #c8e2c7;
       text-decoration-thickness: 1px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
-    .materia.activa:hover {
-  transform: translateY(2px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-}
+  
     .controls {
       text-align: center;
       margin-bottom: 20px;
@@ -88,8 +88,10 @@
     button:hover {
       background-color: #ffcbd9;
     }
+    
   </style>
 </head>
+
 <body>
   <h1>Malla Interactiva - Ingeniería Química</h1>
   <div class="controls">
